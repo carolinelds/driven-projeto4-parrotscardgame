@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+    
+}
+
+body {
+    background-color: #EEF9BF;
+    
+}
+
+h1 {
+    font-family: 'Roboto', sans-serif;
+    color: #75B79E;
+    font-weight: bold;
+    font-size: 56px;
+    line-height: 66px;
+    letter-spacing: -0.004em;
+    margin-top: 40px;
+    text-align: center;
+
+}
+
+main {
+    margin: 0 auto;
+    margin-top: 47px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: calc(117px + 638px + 117px);
+}
+
+@media (max-width: 614px){
+    
+    h1 {
+        font-size: 36px;
+        line-height: 42px;
+    }
+
+}
