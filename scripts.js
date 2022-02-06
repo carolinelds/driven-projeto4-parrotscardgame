@@ -23,3 +23,44 @@ function beginGame(){
         begin();
     }
 }
+
+sortCards(number){
+    
+    // select background gifs that will be used
+    let backImg = backgroundGifs.slice(0,number/2);
+
+    // generate unsorted positions array,
+    // each gif name (card) appearing twice
+    let positions = [];
+    let cont = 1;   
+    for (let i = 0; i < number - 1; i = i + 2){
+        positions[i] = cont;
+        positions[i+1] = cont;
+        cont++;
+    }
+
+    // sort positions array
+    positions.sort(comparator);
+
+    // separate arrays with positions of first cards and second cards 
+    // (because each card appears twice)
+    let posFirstCard = [];
+    let posSecondCard = [];
+    for (let i = 0; i < number/2; i++){
+        posFirstCard[i] = positions.indexOf(i+1);
+        posSecondCard[i] = positions.lastIndexOf(i+1);
+    }
+
+    // create cards object
+    const cards = {
+        backImg: backImg,
+        posFirst: posFirstCard,
+        posSecond: posSecondCard
+    }
+    
+}
+
+function comparator() { 
+	return Math.random() - 0.5; 
+}
+
