@@ -24,7 +24,7 @@ function beginGame(){
     }
 }
 
-sortCards(number){
+function sortCards(number){
     
     // select background gifs that will be used
     let backImg = backgroundGifs.slice(0,number/2);
@@ -40,7 +40,7 @@ sortCards(number){
     }
 
     // sort positions array
-    positions.sort(comparator);
+    positions = positions.sort(comparator);
 
     // separate arrays with positions of first cards and second cards 
     // (because each card appears twice)
@@ -58,9 +58,36 @@ sortCards(number){
         posSecond: posSecondCard
     }
     
+    // position cards in their respective first and second positions
+    positionCards(number,cards,positions);
 }
 
 function comparator() { 
 	return Math.random() - 0.5; 
 }
 
+function positionCards(number,object,order){
+
+    const firstRow = document.querySelector(".first-row");
+    const secondRow = document.querySelector(".second-row");
+
+    for (let i = 0; i < number; i++){
+
+        if (i <= number/2 - 1){ //position first half in .first-row
+           firstRow.innerHTML += `
+            <div class="card">
+                <img src="./images/front.png">
+                <img src="./images/${order[i]}.gif" class="display-none">
+            </div>
+            `;
+
+        } else { //position second half in .second-row
+            secondRow.innerHTML += `
+            <div class="card">
+                <img src="./images/front.png">
+                <img src="./images/${order[i]}.gif" class="display-none">
+            </div>
+            `;
+        }
+    }
+}

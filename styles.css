@@ -26,31 +26,37 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 326px;
-    max-width: 872px;
+    height: auto;
+    max-width: 1060px;
 }
 
 section {
     /*background-color: blue;*/
     display: flex;
     justify-content: space-between;
-    max-width: 872px;
+    flex-wrap: wrap;
+    max-width: 100%;    
 }
 
 .card {
     background-color: #A7E9AF;
     height: 146px;
-    width: 117px;
+    min-width: 117px;
     border: 1px solid #99CEA8;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 17px;
 }
 
 .card img {
     height: 100px;
     width: 100px;
+}
+
+.display-none {
+    display: none;
 }
 
 
@@ -70,10 +76,6 @@ section {
     section {
         max-width: 117px;
         flex-wrap: wrap;
-    }
-
-    .second-row {
-        display: none;
     }
 
     .card {
