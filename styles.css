@@ -17,23 +17,67 @@ h1 {
     letter-spacing: -0.004em;
     margin-top: 40px;
     text-align: center;
-
 }
 
 main {
+    /*background-color: red;*/
     margin: 0 auto;
     margin-top: 47px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: space-between;
-    max-width: calc(117px + 638px + 117px);
+    height: 326px;
+    max-width: 872px;
 }
+
+section {
+    /*background-color: blue;*/
+    display: flex;
+    justify-content: space-between;
+    max-width: 872px;
+}
+
+.card {
+    background-color: #A7E9AF;
+    height: 146px;
+    width: 117px;
+    border: 1px solid #99CEA8;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card img {
+    height: 100px;
+    width: 100px;
+}
+
 
 @media (max-width: 614px){
     
     h1 {
         font-size: 36px;
         line-height: 42px;
+    }
+
+    main {
+        height: auto;
+        max-width: 117px;
+      
+    }
+
+    section {
+        max-width: 117px;
+        flex-wrap: wrap;
+    }
+
+    .second-row {
+        display: none;
+    }
+
+    .card {
+        margin-bottom: 34px;
     }
 
 }
