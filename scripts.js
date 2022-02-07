@@ -153,6 +153,8 @@ function turnCard(item) {
 
         if (whichMove.length === 0) { // if first move
 
+            playAudio("./audio/click.mp3");
+
             // identify index position of item (first move) inside allCards
             for (let i = 0; i < allCards.length; i++) {
                 if (allCards[i] === item) {
@@ -183,6 +185,8 @@ function turnCard(item) {
             if ((index2 === cards.posFirst[currentCard - 1]) ||
                 (index2 === cards.posSecond[currentCard - 1])) {
                 
+                playAudio("./audio/correct.mp3");
+
                 discoveredPairs++;
                 
                 // keep cards the way they are (same CSS for both classes)
@@ -206,6 +210,8 @@ function turnCard(item) {
                 moveBlocker = 0; // new movement unblocked
 
             } else { // if second move does not match first one
+
+                playAudio("./audio/wrong_faustao.mp3");
 
                 // wait 1s to turn cards back again
                 setTimeout(turnCardBack, 1000);
@@ -258,6 +264,7 @@ function youWon() {
         firstRow.innerHTML = `
         <img src="./images/angryparrot.gif" alt="Angry parrot"> 
         `;
+        playAudio("./audio/end.mp3");
     }   
 }
 
@@ -273,4 +280,8 @@ function increaseClock() {
     } else {
         clock.innerHTML = parseInt(clock.innerHTML) + 1;
     }
+}
+
+function playAudio(url) { 
+    new Audio(url).play(); 
 }
