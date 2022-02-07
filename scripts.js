@@ -254,7 +254,11 @@ function youWon() {
     // restart game
     if (playAgain === "S") {
         beginGame();
-    }    
+    } else {
+        firstRow.innerHTML = `
+        <img src="./images/angryparrot.gif" alt="Angry parrot"> 
+        `;
+    }   
 }
 
 function startClock(){

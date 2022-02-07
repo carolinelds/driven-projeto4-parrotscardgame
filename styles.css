@@ -92,6 +92,10 @@ section {
     font-weight: bold;
 }
 
+.first-row > img {
+    margin: 0 auto;
+}
+
 
 @media (max-width: 614px){
     
