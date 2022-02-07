@@ -9,7 +9,7 @@ if (window.matchMedia("(max-width: 614px)").matches) {
 const backgroundGifs = [1, 2, 3, 4, 5, 6, 7];
 const validQtyCards = [4, 6, 8, 10, 12, 14];
 
-// global variable
+// global variables
 let cards = {
     backImg: [],
     posFirst: [],
@@ -166,7 +166,7 @@ function turnCard(item) {
             for (let i = 0; i < cards.backImg.length; i++) {
                 if ((index1 === cards.posFirst[i]) ||
                     (index1 === cards.posSecond[i])) {
-                    currentCard = i + 1;
+                    currentCard = i + 1; // because their names start at 1
                 }
             }
 
@@ -196,6 +196,9 @@ function turnCard(item) {
 
                 // check if all pairs have been discovered
                 if (discoveredPairs === allCards.length / 2) {
+
+                    setTimeout(youWon, 1000);
+
                     console.log("You won, the game is over");
                 }
 
@@ -227,4 +230,27 @@ function turnCardBack() {
     })
 
     moveBlocker = 0; // new movement unblocked
+}
+
+function youWon() {
+
+    alert(`Você ganhou em ${numberOfMoves/2} jogadas!`);
+
+    const playAgain = prompt("Você gostaria de reiniciar a partida?\n\nS/N");
+    playAgain.toUpperCase(playAgain);
+
+    // clear screen from old game
+    const firstRow = document.querySelector(".first-row");
+    const secondRow = document.querySelector(".second-row");
+    firstRow.innerHTML = "";
+    secondRow.innerHTML = "";
+
+    // restart game variables
+    numberOfMoves = 0;
+    discoveredPairs = 0;
+
+    // restart game
+    if (playAgain === "S") {
+        beginGame();
+    }    
 }
