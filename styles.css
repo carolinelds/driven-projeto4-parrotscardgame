@@ -1,11 +1,9 @@
 * {
-    box-sizing: border-box;
-    
+    box-sizing: border-box; 
 }
 
 body {
     background-color: #EEF9BF;
-    
 }
 
 h1 {
@@ -41,12 +39,13 @@ section {
 .card {
     position: relative;
     height: 146px;
-    width: 117px;
+    min-width: 117px;
     margin: 17px;
 }
 
 .face {
     width: 100%;
+    min-width: 117px;
     height: 100%;
     background-color: #A7E9AF;
     border: 1px solid #99CEA8;
@@ -60,17 +59,17 @@ section {
     transform-style: preserve-3d;
 }
 
-.back-face { /*back-face começa escondido*/
+.back-face { 
     transform: rotateY(180deg);
 }
 
 .active.back-face,
-.discovered.back-face { /*ativado: back-face vai pra frente*/
+.discovered.back-face {
     transform: rotateY(0deg);
 }
 
 .active.front-face,
-.discovered.front-face { /*ativado: front-face vai pra trás*/
+.discovered.front-face { 
     transform: rotateY(180deg);
 }
 
@@ -81,6 +80,16 @@ section {
 
 .display-none {
     display: none;
+}
+
+.clock {
+    font-size: 30px;
+    color: firebrick;
+    position: absolute;
+    top: 110px;
+    right: 100px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
 }
 
 
@@ -94,7 +103,6 @@ section {
     main {
         height: auto;
         max-width: 117px;
-      
     }
 
     section {

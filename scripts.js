@@ -1,10 +1,3 @@
-/*//check if layout is mobile or desktop
-if (window.matchMedia("(max-width: 614px)").matches) {
-    let checkMobile = true;
-} else {
-   let checkMobile = false;
-}*/
-
 // global constants
 const backgroundGifs = [1, 2, 3, 4, 5, 6, 7];
 const validQtyCards = [4, 6, 8, 10, 12, 14];
@@ -25,12 +18,17 @@ let front = [];
 let backBefore = [];
 let frontBefore = [];
 let moveBlocker = 0;
+let finalTime = null;
+let interval = null;
 
 
 beginGame(); // call first prompt
 
 function beginGame() {
-    numberOfMoves = 0;
+
+    // reset clock 
+    let clock = document.querySelector(".clock");
+    clock.innerHTML = "0";
 
     let qtyCards = prompt("Com quantas cartas deseja jogar? (números pares de 4 até 14)");
 
@@ -38,6 +36,7 @@ function beginGame() {
 
     if (validQtyCards.includes(qtyCards)) {
         sortCards(qtyCards);
+        startClock();
     } else {
         beginGame();
     }
@@ -92,7 +91,7 @@ function positionCards(number, order) {
 
     for (let i = 0; i < number; i++) {
 
-        if (number > 6) {
+        if (number > 6) { // if more than 6 cards
             if (i <= number / 2 - 1) { //position first half in .first-row
                 firstRow.innerHTML += `
                 <div class="card" onclick="turnCard(this)" data-identifier="card">
@@ -104,7 +103,6 @@ function positionCards(number, order) {
                     </div>             
                 </div>
                 `;
-
             } else { //position second half in .second-row
                 secondRow.innerHTML += `
                 <div class="card" onclick="turnCard(this)" data-identifier="card">
@@ -117,7 +115,7 @@ function positionCards(number, order) {
                 </div>
                 `;
             }
-        } else { //position in .first-row only
+        } else { // position in .first-row only
             firstRow.innerHTML += `
                 <div class="card" onclick="turnCard(this)" data-identifier="card">
                     <div class="front-face face" data-identifier="front-face">
@@ -197,6 +195,9 @@ function turnCard(item) {
                 // check if all pairs have been discovered
                 if (discoveredPairs === allCards.length / 2) {
 
+                    const clock = document.querySelector(".clock");
+                    finalTime = parseInt(clock.innerHTML);
+
                     setTimeout(youWon, 1000);
 
                     console.log("You won, the game is over");
@@ -234,7 +235,7 @@ function turnCardBack() {
 
 function youWon() {
 
-    alert(`Você ganhou em ${numberOfMoves/2} jogadas!`);
+    alert(`Você ganhou em ${numberOfMoves/2} jogadas e em ${finalTime} segundos!`);
 
     const playAgain = prompt("Você gostaria de reiniciar a partida?\n\nS/N");
     playAgain.toUpperCase(playAgain);
@@ -248,9 +249,24 @@ function youWon() {
     // restart game variables
     numberOfMoves = 0;
     discoveredPairs = 0;
+    finalTime = null;
 
     // restart game
     if (playAgain === "S") {
         beginGame();
     }    
+}
+
+function startClock(){
+    interval = setInterval(increaseClock, 1000);
+}
+
+function increaseClock() {
+    let clock = document.querySelector(".clock");
+
+    if (finalTime !== null){
+        clearInterval(interval);
+    } else {
+        clock.innerHTML = parseInt(clock.innerHTML) + 1;
+    }
 }
