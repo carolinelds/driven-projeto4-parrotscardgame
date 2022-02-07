@@ -64,12 +64,14 @@ section {
     transform: rotateY(180deg);
 }
 
-.active.back-face { /*ativado: back-face vai pra frente*/
+.active.back-face,
+.discovered.back-face { /*ativado: back-face vai pra frente*/
     transform: rotateY(0deg);
 }
 
-.active.front-face { /*ativado: front-face vai pra trás*/
-    transform: rotateY(-180deg);
+.active.front-face,
+.discovered.front-face { /*ativado: front-face vai pra trás*/
+    transform: rotateY(180deg);
 }
 
 .card img {

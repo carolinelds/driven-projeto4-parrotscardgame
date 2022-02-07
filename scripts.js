@@ -15,11 +15,23 @@ let cards = {
     posFirst: [],
     posSecond: []
 };
+let numberOfMoves = 0;
+let discoveredPairs = 0;
+let index1 = null;
+let index2 = null;
+let currentCard = null;
+let back = [];
+let front = [];
+let backBefore = [];
+let frontBefore = [];
+let moveBlocker = 0;
+
 
 beginGame(); // call first prompt
 
-function beginGame(){
-    
+function beginGame() {
+    numberOfMoves = 0;
+
     let qtyCards = prompt("Com quantas cartas deseja jogar? (números pares de 4 até 14)");
 
     qtyCards = parseInt(qtyCards);
@@ -27,22 +39,22 @@ function beginGame(){
     if (validQtyCards.includes(qtyCards)) {
         sortCards(qtyCards);
     } else {
-        begin();
+        beginGame();
     }
 }
 
-function sortCards(number){
-    
+function sortCards(number) {
+
     // select background gifs that will be used
-    let backImg = backgroundGifs.slice(0,number/2);
+    let backImg = backgroundGifs.slice(0, number / 2);
 
     // generate unsorted positions array,
     // each gif name (card) appearing twice
     let positions = [];
-    let cont = 1;   
-    for (let i = 0; i < number - 1; i = i + 2){
+    let cont = 1;
+    for (let i = 0; i < number - 1; i = i + 2) {
         positions[i] = cont;
-        positions[i+1] = cont;
+        positions[i + 1] = cont;
         cont++;
     }
 
@@ -53,9 +65,9 @@ function sortCards(number){
     // (because each card appears twice)
     let posFirstCard = [];
     let posSecondCard = [];
-    for (let i = 0; i < number/2; i++){
-        posFirstCard[i] = positions.indexOf(i+1);
-        posSecondCard[i] = positions.lastIndexOf(i+1);
+    for (let i = 0; i < number / 2; i++) {
+        posFirstCard[i] = positions.indexOf(i + 1);
+        posSecondCard[i] = positions.lastIndexOf(i + 1);
     }
 
     // update cards object
@@ -64,55 +76,155 @@ function sortCards(number){
         posFirst: posFirstCard,
         posSecond: posSecondCard
     }
-    
+
     // position cards in their respective first and second positions
-    positionCards(number,positions);
+    positionCards(number, positions);
 }
 
-function comparator() { 
-	return Math.random() - 0.5; 
+function comparator() {
+    return Math.random() - 0.5;
 }
 
-function positionCards(number,order){
+function positionCards(number, order) {
 
     const firstRow = document.querySelector(".first-row");
     const secondRow = document.querySelector(".second-row");
 
-    for (let i = 0; i < number; i++){
+    for (let i = 0; i < number; i++) {
 
-        if (i <= number/2 - 1){ //position first half in .first-row
+        if (number > 6) {
+            if (i <= number / 2 - 1) { //position first half in .first-row
+                firstRow.innerHTML += `
+                <div class="card" onclick="turnCard(this)" data-identifier="card">
+                    <div class="front-face face" data-identifier="front-face">
+                        <img src="./images/front.png">
+                    </div>
+                    <div class="back-face face" data-identifier="back-face">
+                        <img src="./images/${order[i]}.gif">
+                    </div>             
+                </div>
+                `;
+
+            } else { //position second half in .second-row
+                secondRow.innerHTML += `
+                <div class="card" onclick="turnCard(this)" data-identifier="card">
+                    <div class="front-face face" data-identifier="front-face">
+                        <img src="./images/front.png">
+                    </div>
+                    <div class="back-face face" data-identifier="back-face">
+                        <img src="./images/${order[i]}.gif">
+                    </div>             
+                </div>
+                `;
+            }
+        } else { //position in .first-row only
             firstRow.innerHTML += `
-            <div class="card" onclick="turnCard(this)" data-identifier="card">
-                <div class="front-face face" data-identifier="front-face">
-                    <img src="./images/front.png">
+                <div class="card" onclick="turnCard(this)" data-identifier="card">
+                    <div class="front-face face" data-identifier="front-face">
+                        <img src="./images/front.png">
+                    </div>
+                    <div class="back-face face" data-identifier="back-face">
+                        <img src="./images/${order[i]}.gif">
+                    </div>             
                 </div>
-                <div class="back-face face" data-identifier="back-face">
-                    <img src="./images/${order[i]}.gif">
-                </div>             
-            </div>
-            `;
-
-        } else { //position second half in .second-row
-            secondRow.innerHTML += `
-            <div class="card" onclick="turnCard(this)" data-identifier="card">
-                <div class="front-face face" data-identifier="front-face">
-                    <img src="./images/front.png">
-                </div>
-                <div class="back-face face" data-identifier="back-face">
-                    <img src="./images/${order[i]}.gif">
-                </div>             
-            </div>
-            `;
+                `;
         }
     }
 }
 
-function turnCard(item){  
-        
-    const back = item.querySelector(".back-face");
-    back.classList.toggle("active");
+function turnCard(item) {
 
-    const front = item.querySelector(".front-face");
-    front.classList.toggle("active");
+    // check if new movement is allowed or blocked for now
+    if (moveBlocker === 0) {
 
+        backBefore = back;
+        frontBefore = front;
+
+        numberOfMoves++;
+
+        let allCards = document.querySelectorAll(".card");
+
+        // check if there were any card active before clicking
+        let whichMove = document.querySelectorAll(".active");
+
+        // turn card
+        back = item.querySelector(".back-face");
+        back.classList.add("active");
+        front = item.querySelector(".front-face");
+        front.classList.add("active");
+
+        if (whichMove.length === 0) { // if first move
+
+            // identify index position of item (first move) inside allCards
+            for (let i = 0; i < allCards.length; i++) {
+                if (allCards[i] === item) {
+                    index1 = i;
+                }
+            }
+
+            // identify which gif is on the card
+            for (let i = 0; i < cards.backImg.length; i++) {
+                if ((index1 === cards.posFirst[i]) ||
+                    (index1 === cards.posSecond[i])) {
+                    currentCard = i + 1;
+                }
+            }
+
+        } else { // if second move
+
+            moveBlocker++; // goes to 1: new movement blocked
+
+            // identify index position of item (second move) inside allCards
+            for (let i = 0; i < allCards.length; i++) {
+                if (allCards[i] === item) {
+                    index2 = i;
+                }
+            }
+
+            // check if second move matches first move (the same gif)
+            if ((index2 === cards.posFirst[currentCard - 1]) ||
+                (index2 === cards.posSecond[currentCard - 1])) {
+                
+                discoveredPairs++;
+                
+                // keep cards the way they are (same CSS for both classes)
+                const allClasses = [back, backBefore, front, frontBefore];
+                allClasses.forEach(function (el) {
+                    el.classList.remove("active"),
+                    el.classList.add("discovered")
+                })
+
+                // check if all pairs have been discovered
+                if (discoveredPairs === allCards.length / 2) {
+                    console.log("You won, the game is over");
+                }
+
+                moveBlocker = 0; // new movement unblocked
+
+            } else { // if second move does not match first one
+
+                // wait 1s to turn cards back again
+                setTimeout(turnCardBack, 1000);
+
+                console.log("The game goes on");
+            }
+
+            // restart movement variables 
+            index1 = null;
+            index2 = null;
+            currentCard = null;
+        }
+    }
+}
+
+function turnCardBack() {
+
+    // remove active status from current and previous selected cards
+    // i.e. turn them back again
+    const allClasses = [front, back, frontBefore, backBefore];
+    allClasses.forEach(function (el) {
+        el.classList.remove("active")
+    })
+
+    moveBlocker = 0; // new movement unblocked
 }
